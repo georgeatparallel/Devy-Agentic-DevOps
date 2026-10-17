@@ -117,6 +117,48 @@ mcp_servers:
 `name` becomes the tool category and name prefix. Front remote servers with TLS;
 the bearer token is the authn. See [Configuration](configuration.md#mcp-servers).
 
+### Public web research with Parallel
+
+Use [Parallel Search MCP](https://docs.parallel.ai/integrations/mcp/search-mcp)
+to look up current vendor advisories, release notes, and public documentation
+during an investigation. It provides web search in Fast mode and page fetching,
+with no account or API key needed for light use.
+
+Append this entry to your existing `mcp_servers` list in `config.yaml` (keep any
+other mounts):
+
+```yaml
+mcp_servers:
+  - name: parallel
+    transport: http
+    url: https://search.parallel.ai/mcp
+    safety_tier: read-only
+```
+
+Leave `token` and `secret_ref` unset for the anonymous endpoint. Restart the
+proxy after updating the file. The mounted tools are named
+`parallel_web_search` and `parallel_web_fetch`, in category `parallel`.
+This adds a separate source; the native Tavily `web_search` tool and
+`knowledge.web_search_enabled` setting keep their existing behavior.
+
+To check discovery, ask Devy to list the tools in category `parallel`
+(`find_tools(category="parallel", list_only=true)`). Then try:
+
+> Use the Parallel tools to find PostgreSQL's current supported versions on
+> postgresql.org. Fetch the official version policy page and cite the source.
+
+Devy discovers the tools through `find_tools`, searches with
+`parallel_web_search`, and can read a result URL with `parallel_web_fetch`.
+If the tools are missing, check the proxy's MCP mount warnings and outbound
+HTTPS access to `search.parallel.ai`.
+
+Queries and requested URLs go to an external service: use public information,
+not incident logs, credentials, or private infrastructure details. Anonymous
+usage has rate limits; for higher limits, use a Parallel API key via the existing
+vault-backed `secret_ref` mechanism. See the
+[MCP setup reference](configuration.md#mcp-servers) and
+[Parallel connection options](https://docs.parallel.ai/integrations/mcp/search-mcp#installation).
+
 ## The host MCP
 
 For diagnostics on a real host, the answer is the bundled **[host MCP](../host-mcp/README.md)**

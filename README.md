@@ -229,6 +229,7 @@ produces a ranked RCA — distinguishing the OOM *symptom* from the pool-exhaust
 |---|---|
 | **[Architecture](docs/architecture.md)** | The design — proxy, harness loop, tools-router, memory model, request flow |
 | **[Extending Devy](docs/extending.md)** | Every plug point: tools, MCP, observability, models, embedders, storage, surfaces, auth |
+| **[Parallel web research](docs/extending.md#public-web-research-with-parallel)** | Optional keyless web search and page fetching through an HTTP MCP mount |
 | **[Configuration](docs/configuration.md)** | Full `config.yaml` + `.env` + environment-variable reference |
 | **[Deployment](docs/deployment.md)** | Compose stack, managed Postgres/RDS, native, secrets, scaling, the auth seam |
 | **[CI/CD](docs/ci-cd.md)** | Build & deploy Devy: the workflows, the SSM release ledger, rollback, webhooks, and the surface funnel |
